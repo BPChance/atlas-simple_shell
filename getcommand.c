@@ -36,11 +36,19 @@ void tokenize_input(char *input, char **args)
 {
 	char *token = strtok(input, " ");
 	int i = 0;
+	int word_count = 0;
 
 	while (token != NULL)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
+		word_count++;
+	}
+
+	if (word_count != 1)
+	{
+		fprintf(stderr, "Command must be one word\n");
+		exit(EXIT_FAILURE);
 	}
 	args[i] = NULL;
 
