@@ -15,7 +15,7 @@ void get_command(char *input)
 
 	if (fgets(input, MAX_LENGTH, stdin) == NULL)
 	{
-		printf("\n");
+	/**	printf("\n"); */
 		exit(EXIT_SUCCESS);
 	}
 
