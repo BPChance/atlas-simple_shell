@@ -4,11 +4,16 @@
  * Return: 0
  */
 #define MAX_LENGTH 1024
+
+extern char **environ;
+
 int main(void)
 {
 	pid_t pid;
 	int i;
 	char input[MAX_LENGTH];
+	char *args[MAX_LENGTH];
+	char *token;
 	/** Infinite loop to prompt user til they exit */
 	while (1)
 	{
@@ -30,6 +35,20 @@ int main(void)
 				break;
 			}
 		}
+		/** tokenize input */
+		token = strtok(input, " ");
+
+		i = 0;
+
+		while (token != NULL)
+		{
+			args[i++] = token;
+			token = strtok(NULL, " ");
+		}
+		args[i] = NULL;
+		/** check for built in commands */;
+		if (strcmp(args[0], "exit") == 0)
+			break;
 		/** fork a child process */
 		pid = fork();
 		
@@ -41,10 +60,10 @@ int main(void)
 		}
 		else if (pid == 0)
 		{
-			/** child process
-			 * execute the command */
-			execlp(input, input, NULL);
-			/** if execlp returns, the command couldnt be executed */
+			/** child process */
+			/** usage of environ in execve */
+			execve(args[0], args, environ);
+			/** if execve returns, the command couldnt be executed */
 			fprintf(stderr, "%s: command not found\n", input);
 			exit(EXIT_FAILURE);
 		}
@@ -52,7 +71,8 @@ int main(void)
 		{
 			/** parent process
 			 * wait for the child process to finish */
-			wait(NULL);
+			if (args[i - 1][0] != '&')
+				wait(NULL);
 		}
 	}
 	return (0);
