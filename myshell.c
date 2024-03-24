@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "getcommand.h"
 /**
  * main - entry point
  * Return: 0
@@ -9,71 +10,41 @@ extern char **environ;
 
 int main(void)
 {
-	pid_t pid;
-	int i;
 	char input[MAX_LENGTH];
 	char *args[MAX_LENGTH];
-	char *token;
-	/** Infinite loop to prompt user til they exit */
+	pid_t pid;
+
 	while (1)
 	{
-		printf("$ ");
-		fflush(stdout);
+		/** get_command from getcommand.c */
+		get_command(input);
+		/** tokenize_input from getcommand.c */
+		tokenize_input(input, args);
 
-		/** prints a newline if ctrl-d (eof) is encountered */
-		if (fgets(input, MAX_LENGTH, stdin) == NULL)
-		{
-			printf("\n");
-			break;
-		}
-		/** removes newline from input */
-		for (i = 0; input[i] != '\0'; i++)
-		{
-			if (input[i] == '\n')
-			{
-				input[i] = '\0';
-				break;
-			}
-		}
-		/** tokenize input */
-		token = strtok(input, " ");
-
-		i = 0;
-
-		while (token != NULL)
-		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[i] = NULL;
-		/** check for built in commands */;
-		if (strcmp(args[0], "exit") == 0)
-			break;
 		/** fork a child process */
 		pid = fork();
-		
+
 		if (pid < 0)
 		{
-			/** error handling if the fork fails */
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
-		else if (pid == 0)
+	       	else if (pid == 0)
 		{
 			/** child process */
-			/** usage of environ in execve */
+			/** use execve and pass environ */
 			execve(args[0], args, environ);
 			/** if execve returns, the command couldnt be executed */
-			fprintf(stderr, "%s: command not found\n", input);
+			fprintf(stderr, "%s: command not found\n", args[0]);
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
-			/** parent process
-			 * wait for the child process to finish */
-			if (args[i - 1][0] != '&')
+			/** parent process */
+			/** wait for the child process to finish unless it's a background process */
+			if (args[1] == NULL || strcmp(args[1], "&") != 0)
 				wait(NULL);
 		}
 	}
-	return (0);
+    return (0);
 }
