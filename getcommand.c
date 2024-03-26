@@ -1,7 +1,9 @@
 #include "getcommand.h"
 #include "shell.h"
 /**
- *
+ * get_command - read command from user
+ * @input: buffer that stores user command
+ * Return: void
  */
 
 #define MAX_LENGTH 1024
@@ -10,12 +12,11 @@ void get_command(char *input)
 {
 	int i;
 
-/**	printf("$ "); */
+	printf("$ ");
 	fflush(stdout);
 
 	if (fgets(input, MAX_LENGTH, stdin) == NULL)
 	{
-	/**	printf("\n"); */
 		exit(EXIT_SUCCESS);
 	}
 
@@ -30,25 +31,23 @@ void get_command(char *input)
 }
 
 /**
- *
+ * tokenize_input - tokenize user input
+ * @input: input to be tokenized
+ * @args: arguments
+ * Return: void
  */
 void tokenize_input(char *input, char **args)
 {
-	char *token = strtok(input, " ");
+	char *token;
 	int i = 0;
-	int word_count = 0;
+
+	token = strtok(input, " ");
 
 	while (token != NULL)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " ");
-		word_count++;
 	}
 
-	if (word_count != 1)
-	{
-		fprintf(stderr, "Command must be one word\n");
-		exit(EXIT_FAILURE);
-	}
 	args[i] = NULL;
 }

@@ -15,10 +15,9 @@ int main(void)
 	char *args[MAX_LENGTH];
 	pid_t pid;
 
-	printf("$ ");
-
 	while (1)
 	{
+	/**	printf("$ "); */
 		/** get_command from getcommand.c */
 		get_command(input);
 		/** tokenize_input from getcommand.c */
