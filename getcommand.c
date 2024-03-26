@@ -10,7 +10,7 @@ void get_command(char *input)
 {
 	int i;
 
-	printf("$ ");
+/**	printf("$ "); */
 	fflush(stdout);
 
 	if (fgets(input, MAX_LENGTH, stdin) == NULL)
@@ -51,5 +51,4 @@ void tokenize_input(char *input, char **args)
 		exit(EXIT_FAILURE);
 	}
 	args[i] = NULL;
-
 }

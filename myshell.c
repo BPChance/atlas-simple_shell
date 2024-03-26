@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "getcommand.h"
+#include <unistd.h>
 /**
  * main - entry point
  * Return: 0
@@ -13,6 +14,8 @@ int main(void)
 	char input[MAX_LENGTH];
 	char *args[MAX_LENGTH];
 	pid_t pid;
+
+	printf("$ ");
 
 	while (1)
 	{
