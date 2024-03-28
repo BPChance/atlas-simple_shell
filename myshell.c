@@ -11,7 +11,7 @@ extern char **environ;
 
 int main(void)
 {
-	char input[MAX_LENGTH];
+	char *input[MAX_LENGTH];
 	char *args[MAX_LENGTH];
 	pid_t pid;
 
@@ -20,7 +20,7 @@ int main(void)
 		/** get_command from getcommand.c */
 		get_command(input);
 		/** tokenize_input from getcommand.c */
-		tokenize_input(input, args);
+		tokenize_input(*input, args);
 
 		/** fork a child process */
 		pid = fork();
@@ -28,6 +28,7 @@ int main(void)
 		if (pid < 0)
 		{
 			perror("fork");
+			free(*input);
 			exit(EXIT_FAILURE);
 		}
 	       	else if (pid == 0)
@@ -37,6 +38,7 @@ int main(void)
 			execve(args[0], args, environ);
 			/** if execve returns, the command couldnt be executed */
 			fprintf(stderr, "%s: command not found\n", args[0]);
+			free(*input);
 			exit(EXIT_FAILURE);
 		}
 		else
@@ -46,6 +48,7 @@ int main(void)
 			if (args[1] == NULL || strcmp(args[1], "&") != 0)
 				wait(NULL);
 		}
+		free(*input);
 	}
     return (0);
 }

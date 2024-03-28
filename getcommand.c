@@ -8,31 +8,35 @@
 
 #define MAX_LENGTH 1024
 
-void get_command(char *input)
+void get_command(char **input)
 {
-	int i, interactive_mode;
+	int interactive_mode;
+	size_t input_size = 0;
 
-	interactive_mode = isatty(fileno(stdin));
+	interactive_mode = isatty(STDIN_FILENO);
 
 	if (interactive_mode)
 	{
 	printf("$ ");
 	fflush(stdout);
 	}
-
-	if (fgets(input, MAX_LENGTH, stdin) == NULL)
+	/** error or eof */
+	if (getline(input, &input_size, stdin) == -1)
 	{
-		exit(EXIT_SUCCESS);
+		free(*input);
+		exit(EXIT_FAILURE);
 	}
 
-	for (i = 0; input[i] != '\0'; i++)
+	(*input)[strcspn(*input, "\n")] = '\0';
+
+/**	for (i = 0; input[i] != '\0'; i++)
 	{
 		if (input[i] == '\n')
 		{
 			input[i] = '\0';
 			break;
 		}
-	}
+	} */
 }
 
 /**
