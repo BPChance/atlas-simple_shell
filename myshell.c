@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "getcommand.h"
+#include <unistd.h>
 /**
  * main - entry point
  * Return: 0
@@ -16,6 +17,7 @@ int main(void)
 
 	while (1)
 	{
+	/**	printf("$ "); */
 		/** get_command from getcommand.c */
 		get_command(input);
 		/** tokenize_input from getcommand.c */
