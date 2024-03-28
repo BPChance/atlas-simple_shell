@@ -10,10 +10,15 @@
 
 void get_command(char *input)
 {
-	int i;
+	int i, interactive_mode;
 
+	interactive_mode = isatty(fileno(stdin));
+
+	if (interactive_mode)
+	{
 	printf("$ ");
 	fflush(stdout);
+	}
 
 	if (fgets(input, MAX_LENGTH, stdin) == NULL)
 	{
