@@ -43,7 +43,7 @@ void get_command(char **input)
  * @args: arguments
  * Return: void
  */
-void tokenize_input(char *input, char **args)
+void tokenize_input(char *input, char **args, int *exit_flag)
 {
 	char *token;
 	int i = 0;
@@ -57,4 +57,14 @@ void tokenize_input(char *input, char **args)
 	}
 
 	args[i] = NULL;
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		*exit_flag = 1;
+	}
+	else
+	{
+		*exit_flag = 0;
+	}
 }
+

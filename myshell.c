@@ -5,50 +5,57 @@
  * main - entry point
  * Return: 0
  */
-#define MAX_LENGTH 1024
+#define MAX_INPUT_SIZE 256
 
 extern char **environ;
 
 int main(void)
 {
-	char *input[MAX_LENGTH];
-	char *args[MAX_LENGTH];
+	char input[MAX_INPUT_SIZE];
+	char *args[MAX_INPUT_SIZE];
 	pid_t pid;
+	int exit_flag = 0;
+	int status;
 
-	while (1)
+	while (!exit_flag)
 	{
-		/** get_command from getcommand.c */
-		get_command(input);
-		/** tokenize_input from getcommand.c */
-		tokenize_input(*input, args);
+		get_command(args);
+		
+		if (args[0] == NULL)
+			continue;
 
-		/** fork a child process */
+		if (strcmp(args[0], "exit") == 0)
+		{
+			exit_flag = 1;
+			continue;
+		}
+
 		pid = fork();
 
 		if (pid < 0)
 		{
 			perror("fork");
-			free(*input);
 			exit(EXIT_FAILURE);
 		}
 	       	else if (pid == 0)
 		{
-			/** child process */
-			/** use execve and pass environ */
-			execve(args[0], args, environ);
-			/** if execve returns, the command couldnt be executed */
-			fprintf(stderr, "%s: command not found\n", args[0]);
-			free(*input);
-			exit(EXIT_FAILURE);
+			printf("Executing command: %s\n", args[0]);
+
+			if (execve(args[0], args, environ) == -1)
+			{
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
 			/** parent process */
 			/** wait for the child process to finish unless it's a background process */
 			if (args[1] == NULL || strcmp(args[1], "&") != 0)
-				wait(NULL);
+				waitpid(pid, &status, 0);
 		}
-		free(*input);
 	}
-    return (0);
+	
+	return (0);
 }
+
