@@ -1,4 +1,3 @@
-#include "getcommand.h"
 #include "shell.h"
 /**
  * get_command - read command from user
@@ -10,19 +9,20 @@
 
 void get_command(char **input)
 {
-	int i, interactive_mode;
+	int i;
 	size_t input_size = 0;
+	ssize_t input_length;
 
-	interactive_mode = isatty(STDIN_FILENO);
-
-	if (interactive_mode)
+/*	if (isatty(STDIN_FILENO))
 	{
-	printf("$ ");
-	fflush(stdout);
-	}
+		write(STDOUT_FILENO, "$ ", 2);
+	} */
+
+	input_length = getline(input, &input_size, stdin);
 	/** error or eof */
-	if (getline(input, &input_size, stdin) == -1)
+	if (input_length == -1)
 	{
+		perror("getline");
 		free(*input);
 		exit(EXIT_FAILURE);
 	}

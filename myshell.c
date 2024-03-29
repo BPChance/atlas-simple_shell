@@ -1,5 +1,4 @@
 #include "shell.h"
-#include "getcommand.h"
 #include <unistd.h>
 /**
  * main - entry point
@@ -17,6 +16,10 @@ int main(void)
 
 	while (1)
 	{
+		if (isatty(STDIN_FILENO))
+		{
+			write(STDOUT_FILENO, "$ ", 2);
+		}
 		/** get_command from getcommand.c */
 		get_command(input);
 		/** tokenize_input from getcommand.c */
