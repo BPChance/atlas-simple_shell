@@ -48,10 +48,43 @@ int main(void)
 		{
 			/** parent process */
 			/** wait for the child process to finish unless it's a background process */
-			if (args[1] == NULL || *args[1] == '&')
+			if (is_background(args[0]))
+				printf("[%d]\n", pid);
+			else
 				wait(NULL);
 		}
 		free(*input);
 	}
     return (0);
+}
+
+/**
+ * is_background - determines whether command should be
+ * executed as a background process
+ * @args: command to be executed
+ * Return: 0
+ */
+int is_background(char *args)
+{
+	int i = 0;
+
+	while (args[i] != '\0')
+	{
+		if (args[i] == '&')
+		{
+			/** check if & is last character */
+			if (args[i + 1] == '\0')
+			{
+				/** remove & from argument */
+				args[i] = '\0';
+				return (1);
+			}
+			else
+			{
+				return (0);
+			}
+		}
+		i++;
+	}
+	return (0);
 }
