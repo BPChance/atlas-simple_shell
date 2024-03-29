@@ -10,7 +10,7 @@
 
 void get_command(char **input)
 {
-	int interactive_mode;
+	int i, interactive_mode;
 	size_t input_size = 0;
 
 	interactive_mode = isatty(STDIN_FILENO);
@@ -27,16 +27,14 @@ void get_command(char **input)
 		exit(EXIT_FAILURE);
 	}
 
-	(*input)[strcspn(*input, "\n")] = '\0';
-
-/**	for (i = 0; input[i] != '\0'; i++)
+	for (i = 0; (*input)[i] != '\0'; i++)
 	{
-		if (input[i] == '\n')
+		if ((*input)[i] == '\n')
 		{
-			input[i] = '\0';
+			(*input)[i] = '\0';
 			break;
 		}
-	} */
+	}
 }
 
 /**
