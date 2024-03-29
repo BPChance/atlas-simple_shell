@@ -45,16 +45,27 @@ void get_command(char **input)
  */
 void tokenize_input(char *input, char **args)
 {
-	char *token;
+	char *token, *arg_token;
 	int i = 0;
 
 	token = strtok(input, " ");
 
-	while (token != NULL)
+	while (token != NULL && i < MAX_LENGTH - 1)
 	{
-		args[i++] = token;
+		if (token[0] == '/')
+			args[i++] = token;
+
+		else
+		{
+			arg_token = strtok(token, " ");
+
+			while (arg_token != NULL && i < MAX_LENGTH - 1)
+			{
+				args[i++] = arg_token;
+				arg_token = strtok(NULL, " ");
+			}
+		}
 		token = strtok(NULL, " ");
 	}
-
 	args[i] = NULL;
 }
