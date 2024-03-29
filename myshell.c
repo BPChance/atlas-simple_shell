@@ -45,7 +45,7 @@ int main(void)
 		{
 			/** parent process */
 			/** wait for the child process to finish unless it's a background process */
-			if (args[1] == NULL || strcmp(args[1], "&") != 0)
+			if (args[1] == NULL || *args[1] == '&')
 				wait(NULL);
 		}
 		free(*input);
