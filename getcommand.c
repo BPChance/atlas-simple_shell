@@ -21,7 +21,6 @@ void get_command(char **input)
 		if (feof(stdin))
 		{
 			/* input = NULL; */
-			printf("End of input reached");
 			free(*input);
 			exit(EXIT_SUCCESS);
 		}
