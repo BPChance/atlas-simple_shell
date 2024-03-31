@@ -10,7 +10,7 @@ extern char **environ;
 
 int main(void)
 {
-	char input[MAX_LENGTH];
+	char *input[MAX_LENGTH];
 	char *args[MAX_LENGTH];
 	pid_t pid;
 	int status;
@@ -22,9 +22,9 @@ int main(void)
 			write(STDOUT_FILENO, "$ ", 2);
 		}
 		/** get_command from getcommand.c */
-		get_command();
+		get_command(*input);
 		/** tokenize_input from getcommand.c */
-		tokenize_input(input, args);
+		tokenize_input(*input, args);
 
 		/** fork a child process */
 		pid = fork();
@@ -32,18 +32,17 @@ int main(void)
 		if (pid < 0)
 		{
 			perror("fork");
-		/*	free(input); */
 			exit(EXIT_FAILURE);
 		}
 	       	else if (pid == 0)
 		{
 			/** child process */
 			/** use execve and pass environ */
-			if (execve(args[0], args, environ) == -1)
-			{
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
+			execve(args[0], args, environ);
+
+			/*if execve returns, command couldnt be executed */
+			perror("execve");
+			exit(EXIT_FAILURE);
 		}
 		else
 		{
@@ -54,7 +53,6 @@ int main(void)
 			else
 				wait(NULL);
 		}
-	/*	free(input); */
 	}
    	return (0);
 }
@@ -68,24 +66,16 @@ int main(void)
 int is_background(char *args)
 {
 	int i = 0;
-
+	/* find end of string */
 	while (args[i] != '\0')
-	{
-		if (args[i] == '&')
-		{
-			/** check if & is last character */
-			if (args[i + 1] == '\0')
-			{
-				/** remove & from argument */
-				args[i] = '\0';
-				return (1);
-			}
-			else
-			{
-				return (0);
-			}
-		}
 		i++;
-	}
+
+	if (i == 0)
+		return (0);
+
+	/* check if last character is '&' and return 1 if background process */
+	if (args[i - 1] == '&')
+		return (1);
+	/* not a background process */
 	return (0);
 }
