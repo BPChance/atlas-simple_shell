@@ -18,18 +18,9 @@ void get_command(char **input)
 	/** error or eof */
 	if (input_length == -1)
 	{
-		if (feof(stdin))
-		{
 			/* input = NULL; */
 			free(*input);
 			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			perror("getline");
-			free(*input);
-			exit(EXIT_FAILURE);
-		}
 	}
 	else
 	{
