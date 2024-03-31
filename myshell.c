@@ -10,7 +10,7 @@ extern char **environ;
 
 int main(void)
 {
-	char *input[MAX_LENGTH];
+	char *input = NULL;
 	char *args[MAX_LENGTH];
 	pid_t pid;
 	int status;
@@ -22,9 +22,9 @@ int main(void)
 			write(STDOUT_FILENO, "$ ", 2);
 		}
 		/** get_command from getcommand.c */
-		get_command(*input);
+		get_command(&input);
 		/** tokenize_input from getcommand.c */
-		tokenize_input(*input, args);
+		tokenize_input(input, args);
 
 		/** fork a child process */
 		pid = fork();
@@ -32,6 +32,7 @@ int main(void)
 		if (pid < 0)
 		{
 			perror("fork");
+		/*	free(*input); */
 			exit(EXIT_FAILURE);
 		}
 	       	else if (pid == 0)
@@ -42,6 +43,7 @@ int main(void)
 
 			/*if execve returns, command couldnt be executed */
 			perror("execve");
+		/*	free(*input); */
 			exit(EXIT_FAILURE);
 		}
 		else
@@ -53,6 +55,7 @@ int main(void)
 			else
 				wait(NULL);
 		}
+		free(input);
 	}
    	return (0);
 }

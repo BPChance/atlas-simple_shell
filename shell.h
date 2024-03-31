@@ -9,7 +9,7 @@
 
 int main(void);
 void tokenize_input(char *input, char **args);
-int get_command(char *input);
+void get_command(char **input);
 int is_background(char *args);
 
 #endif
