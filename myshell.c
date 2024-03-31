@@ -26,6 +26,13 @@ int main(void)
 		/** tokenize_input from getcommand.c */
 		tokenize_input(input, args);
 
+		if (input == NULL || args[0] == NULL || strlen(args[0]) == 0)
+		{
+			free(input);
+			input = NULL;
+			continue;
+		}
+
 		/** fork a child process */
 		pid = fork();
 
@@ -56,6 +63,7 @@ int main(void)
 				wait(NULL);
 		}
 		free(input);
+		input = NULL;
 	}
    	return (0);
 }

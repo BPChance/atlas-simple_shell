@@ -28,14 +28,14 @@ void get_command(char **input)
 		else
 		{
 			perror("getline");
-			free(input);
+			free(*input);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
 		/* replace newline with null terminator */
-		input[input_length - 1] = '\0';
+		(*input)[input_length - 1] = '\0';
 	}
 }
 
