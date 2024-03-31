@@ -7,34 +7,35 @@
 
 #define MAX_LENGTH 1024
 
-void get_command(char **input)
+ssize_t get_command(void)
 {
-	int i;
+	char *input_buffer = NULL;
 	size_t input_size = 0;
 	ssize_t input_length;
 
-/*	if (isatty(STDIN_FILENO))
-	{
-		write(STDOUT_FILENO, "$ ", 2);
-	} */
-
-	input_length = getline(input, &input_size, stdin);
+	input_length = getline(&input_buffer, &input_size, stdin);
 	/** error or eof */
 	if (input_length == -1)
 	{
-		perror("getline");
-		free(*input);
-		exit(EXIT_FAILURE);
-	}
-
-	for (i = 0; (*input)[i] != '\0'; i++)
-	{
-		if ((*input)[i] == '\n')
+		if (feof(stdin))
 		{
-			(*input)[i] = '\0';
-			break;
+			/* input = NULL; */
+			free(input_buffer);
+			printf("End of input reached");
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+		perror("getline");
+		free(input_buffer);
 		}
 	}
+	else
+	{
+		input_buffer[input_length - 1] = '\0';
+	}
+	free(input_buffer);
+	return (input_length);
 }
 
 /**
