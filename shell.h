@@ -11,5 +11,6 @@ int main(void);
 void tokenize_input(char *input, char **args);
 void get_command(char **input);
 int is_background(char *args);
+char *find_command_path(char *command);
 
 #endif

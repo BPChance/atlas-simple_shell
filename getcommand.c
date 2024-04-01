@@ -1,7 +1,8 @@
 #include "shell.h"
 /**
  * get_command - read command from user
- *
+ * @input: holds the memory address of a dynamically allocated
+ * string where the user input will be stored
  * Return: void
  */
 

@@ -10,7 +10,7 @@ extern char **environ;
 
 int main(void)
 {
-	char *input = NULL;
+	char *input = NULL, *command_path;
 	char *args[MAX_LENGTH];
 	pid_t pid;
 	int status;
@@ -33,10 +33,20 @@ int main(void)
 			continue;
 		}
 
-		if (strcmp(args[0], "exit") == 0)
+		if (strcmp(args[0], "exit") == 0 && args[1] == NULL)
 		{
 			free(input);
 			exit(EXIT_SUCCESS);
+		}
+		/* find full path of command */	
+		command_path = find_command_path(args[0]);
+
+		if (command_path == NULL)
+		{
+			printf("%s: command not found\n", args[0]);
+			free(input);
+			input = NULL;
+			continue;
 		}
 
 		/** fork a child process */
@@ -52,7 +62,7 @@ int main(void)
 		{
 			/** child process */
 			/** use execve and pass environ */
-			execve(args[0], args, environ);
+			execve(command_path, args, environ);
 
 			/*if execve returns, command couldnt be executed */
 			perror("execve");
