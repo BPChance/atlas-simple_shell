@@ -31,5 +31,5 @@ $
 
 ## Flow Chart
 
-![Flowcharts.pdf](https://github.com/BPChance/atlas-simple_shell/files/14828084/Flowcharts.pdf)
-)
+
+![Flowcharts](https://github.com/BPChance/atlas-simple_shell/assets/155327470/54eea4dc-f2c0-4039-9ac4-3baada84292c)
