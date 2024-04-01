@@ -1,3 +1,25 @@
 .TH simple-shell 1 "March 2024" "1.0" "User Commands"
 .SH NAME
-simple-shell \- a simple Unix shell
+simple-shell \- a simple shell program
+
+.SH DESCRIPTION
+my shell is a simple shell program that provides a command-line interface for users to interact with their operating system. It supports basic command execution.
+
+.SH OPTIONS
+.TP
+.B $ /bin/ls -l
+Lists files in long format
+
+.SH EXAMPLES
+.TP
+.B $ /bin/ls
+Lists files.
+.TP
+.B $ /bin/echo "Atlas!"
+Echoes "Atlas!" to the terminal
+.TP
+.B $ exit
+Exit the shell.
+
+.SH AUTHOR
+Braden Chance
