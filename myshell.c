@@ -33,6 +33,12 @@ int main(void)
 			continue;
 		}
 
+		if (strcmp(args[0], "exit") == 0)
+		{
+			free(input);
+			exit(EXIT_SUCCESS);
+		}
+
 		/** fork a child process */
 		pid = fork();
 
