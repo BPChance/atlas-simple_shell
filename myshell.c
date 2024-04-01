@@ -10,7 +10,8 @@ extern char **environ;
 
 int main(void)
 {
-	char *input = NULL, *command_path;
+	/* char *command_path; */
+	char *input = NULL;
 	char *args[MAX_LENGTH];
 	pid_t pid;
 	int status;
@@ -38,7 +39,7 @@ int main(void)
 			free(input);
 			exit(EXIT_SUCCESS);
 		}
-		/* find full path of command */	
+		/* find full path of command *	
 		command_path = find_command_path(args[0]);
 
 		if (command_path == NULL)
@@ -47,7 +48,7 @@ int main(void)
 			free(input);
 			input = NULL;
 			continue;
-		}
+		} */
 
 		/** fork a child process */
 		pid = fork();
@@ -62,7 +63,7 @@ int main(void)
 		{
 			/** child process */
 			/** use execve and pass environ */
-			execve(command_path, args, environ);
+			execve(args[0], args, environ);
 
 			/*if execve returns, command couldnt be executed */
 			perror("execve");
