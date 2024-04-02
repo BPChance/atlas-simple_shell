@@ -36,8 +36,13 @@ int main(void)
 
 		if (strcmp(args[0], "exit") == 0 && args[1] == NULL)
 		{
-			free(input);
-			exit(EXIT_SUCCESS);
+			if (args[1] != NULL)
+				printf("exit: too many arguments\n");
+			else
+			{
+				free(input);
+				exit(EXIT_SUCCESS);
+			}
 		}
 		/* find full path of command *	
 		command_path = find_command_path(args[0]);
